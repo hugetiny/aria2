@@ -121,7 +121,7 @@ void DefaultBtProgressInfoFileTest::testLoad_compat()
   infoFile.setBtRuntime(btRuntime_);
   infoFile.setPeerStorage(peerStorage_);
 
-  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/load.aria2"),
+  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/.load.aria2"),
                        infoFile.getFilename());
 
   infoFile.load();
@@ -168,7 +168,7 @@ void DefaultBtProgressInfoFileTest::testLoad()
   dctx_->setBasePath(A2_TEST_DIR "/load-v0001");
 
   DefaultBtProgressInfoFile infoFile(dctx_, pieceStorage_, option_.get());
-  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/load-v0001.aria2"),
+  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/.load-v0001.aria2"),
                        infoFile.getFilename());
   infoFile.setBtRuntime(btRuntime_);
   infoFile.setPeerStorage(peerStorage_);
@@ -231,7 +231,7 @@ void DefaultBtProgressInfoFileTest::testSave()
   infoFile.setBtRuntime(btRuntime_);
   infoFile.setPeerStorage(peerStorage_);
 
-  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_OUT_DIR "/save-temp.aria2"),
+  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_OUT_DIR "/.save-temp.aria2"),
                        infoFile.getFilename());
 
   infoFile.save();
@@ -338,7 +338,7 @@ void DefaultBtProgressInfoFileTest::testLoad_nonBt_compat()
 
   DefaultBtProgressInfoFile infoFile(dctx, pieceStorage_, option_.get());
 
-  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/load-nonBt.aria2"),
+  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/.load-nonBt.aria2"),
                        infoFile.getFilename());
   infoFile.load();
 
@@ -383,7 +383,7 @@ void DefaultBtProgressInfoFileTest::testLoad_nonBt()
 
   DefaultBtProgressInfoFile infoFile(dctx, pieceStorage_, option_.get());
 
-  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/load-nonBt-v0001.aria2"),
+  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/.load-nonBt-v0001.aria2"),
                        infoFile.getFilename());
   infoFile.load();
 
@@ -428,7 +428,7 @@ void DefaultBtProgressInfoFileTest::testLoad_nonBt_pieceLengthShorter()
 
   DefaultBtProgressInfoFile infoFile(dctx, pieceStorage_, option_.get());
 
-  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/load-nonBt-v0001.aria2"),
+  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "./load-nonBt-v0001.aria2"),
                        infoFile.getFilename());
   infoFile.load();
 
@@ -463,7 +463,7 @@ void DefaultBtProgressInfoFileTest::testSave_nonBt()
 
   DefaultBtProgressInfoFile infoFile(dctx, pieceStorage_, option_.get());
 
-  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_OUT_DIR "/save-temp.aria2"),
+  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_OUT_DIR "/.save-temp.aria2"),
                        infoFile.getFilename());
 
   infoFile.save();
@@ -563,17 +563,17 @@ void DefaultBtProgressInfoFileTest::testUpdateFilename()
   infoFile.setPeerStorage(peerStorage_);
 #endif // ENABLE_BITTORRENT
 
-  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/file1.aria2"),
+  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/.file1.aria2"),
                        infoFile.getFilename());
 
   dctx->getFirstFileEntry()->setPath(A2_TEST_DIR "/file1.1");
 
-  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/file1.aria2"),
+  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/.file1.aria2"),
                        infoFile.getFilename());
 
   infoFile.updateFilename();
 
-  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/file1.1.aria2"),
+  CPPUNIT_ASSERT_EQUAL(std::string(A2_TEST_DIR "/.file1.1.aria2"),
                        infoFile.getFilename());
 }
 

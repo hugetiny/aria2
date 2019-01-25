@@ -114,7 +114,7 @@
 #define MSG_LOADING_SEGMENT_FILE _("Loading the segment file %s.")
 #define MSG_LOADED_SEGMENT_FILE _("The segment file was loaded successfully.")
 #define MSG_NO_URL_TO_DOWNLOAD _("No URI to download. Download aborted.")
-#define MSG_FILE_ALREADY_EXISTS _("File %s exists, but a control file(*.aria2) does not exist. Download was canceled in order to prevent your file from being truncated to 0. If you are sure to download the file all over again, then delete it or add --allow-overwrite=true option and restart aria2.")
+#define MSG_FILE_ALREADY_EXISTS _("File %s exists, but a control file(.*.aria2) does not exist. Download was canceled in order to prevent your file from being truncated to 0. If you are sure to download the file all over again, then delete it or add --allow-overwrite=true option and restart aria2.")
 #define MSG_ALLOCATING_FILE _("Allocating file %s, %s bytes")
 #define MSG_FILE_NOT_FOUND _("File not found")
 #define MSG_NOT_DIRECTORY _("Not a directory")
