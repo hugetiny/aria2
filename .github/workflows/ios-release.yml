@@ -110,7 +110,7 @@ jobs:
           This is a pre-release build for testing. The binary can be used in iOS apps via Process API.
           
           **Platform:** iOS (arm64)
-          **Min iOS Version:** Compatible with macOS 11.0+
+          **Min iOS Version:** iOS 13.0+
           
           See README.ios for usage instructions.
       env:

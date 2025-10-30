@@ -133,8 +133,8 @@ The iOS binary was built with the following libraries statically linked:
 Platform-specific notes:
 
 * iOS uses native Apple TLS (SecureTransport) if built with ``--with-appletls``
-* The binary is compiled for arm64 architecture (iPhone 5S and later)
-* Minimum iOS version: 12.0
+* The binary is compiled for arm64 architecture (iPhone 6S and later)
+* Minimum iOS version: 13.0 (optimized for modern iOS compatibility)
 * Since iOS apps run in a sandbox, aria2 can only access files within
   the app's container directories
 
