@@ -44,3 +44,9 @@ compile
 main.log
 main.trs
 test-suite.log
+# iOS build outputs
+ios-out/
+aria2c-ios-arm64
+aria2-*-arm64-ios-build*
+*.zip
+*.zip.sha256
