@@ -48,5 +48,9 @@ test-suite.log
 ios-out/
 aria2c-ios-arm64
 aria2-*-arm64-ios-build*
-*.zip
-*.zip.sha256
+aria2-*-arm64-ios-*.zip
+aria2-*-arm64-ios-*.zip.sha256
+# Android build outputs
+android-out/
+aria2-*-aarch64-linux-android-*.zip
+aria2-*-aarch64-linux-android-*.zip.sha256
