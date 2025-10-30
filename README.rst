@@ -259,6 +259,7 @@ After configuration is done, run ``make`` to compile the program::
 
 See `Cross-compiling Windows binary`_ to create a Windows binary.
 See `Cross-compiling Android binary`_ to create an Android binary.
+See `Cross-compiling iOS binary`_ to create an iOS binary.
 
 The configure script checks available libraries and enables as many
 features as possible except for experimental features not enabled by
@@ -387,6 +388,43 @@ All the dependent libraries must be installed under
 ``$ANDROID_HOME/usr/local``.
 
 After ``android-config``, run ``make`` to compile sources.
+
+Cross-compiling iOS binary
+--------------------------
+
+In this section, we describe how to build an iOS binary for use in iOS
+applications via the Process API.
+
+The easiest way to build the iOS binary is using the provided
+Dockerfile.ios.  See Dockerfile.ios for details on how to build a binary.
+
+You can also build directly on macOS with Xcode installed using the
+``ios-config`` script.
+
+``ios-config`` script is a configure script wrapper for iOS build.  This
+script assumes the following libraries have been built for cross-compile:
+
+* c-ares
+* openssl
+* expat
+* zlib
+* libssh2
+
+When building the above libraries, make sure that disable shared
+library and enable only static library. We are going to link those
+libraries statically.
+
+``ios-config`` assumes that Xcode with iOS SDK is installed.  It will
+automatically detect the iOS SDK path, or you can set ``$IOS_SDK_PATH``
+environment variable manually.
+
+After ``ios-config``, run ``make`` to compile sources.
+
+**Note:** The iOS binary is intended for use within iOS apps via native
+Swift/Objective-C code using Process API. This is primarily supported
+in self-signed IPAs or apps distributed via TrollStore. App Store
+submissions may have restrictions. See README.ios for detailed usage
+instructions.
 
 Building documentation
 ----------------------

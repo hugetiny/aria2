@@ -44,3 +44,9 @@ compile
 main.log
 main.trs
 test-suite.log
+# Build outputs for all platforms
+ios-out/
+android-out/
+aria2c-ios-arm64
+aria2-*-build*.zip
+aria2-*-build*.zip.sha256
