@@ -4,8 +4,13 @@ on:
   push:
     branches:
       - 'copilot/compile-aria2-for-ios'
+    paths:
+      - 'Dockerfile.ios'
+      - '.github/workflows/ios-release.yml'
     tags:
       - 'release-*'
+  schedule:
+    - cron: '30 1 * * *'
   workflow_dispatch:
     inputs:
       manual_build:
