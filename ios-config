@@ -1,0 +1,86 @@
+#!/bin/sh
+
+# aria2 - The high speed download utility
+#
+# Copyright (C) 2024
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+#
+# In addition, as a special exception, the copyright holders give
+# permission to link the code of portions of this program with the
+# OpenSSL library under certain conditions as described in each
+# individual source file, and distribute linked combinations
+# including the two.
+# You must obey the GNU General Public License in all respects
+# for all of the code used other than OpenSSL.  If you modify
+# file(s) with this exception, you may extend this exception to your
+# version of the file(s), but you are not obligated to do so.  If you
+# do not wish to do so, delete this exception statement from your
+# version.  If you delete this exception statement from all source
+# files in the program, then also delete it here.
+
+# Configure script for iOS cross-compilation
+# This script assumes you have Xcode installed with iOS SDK
+
+if [ -z "$IOS_SDK_PATH" ]; then
+    # Try to find iOS SDK automatically
+    XCODE_PATH=$(xcode-select -p)
+    if [ -n "$XCODE_PATH" ]; then
+        IOS_SDK_PATH="$XCODE_PATH/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk"
+    fi
+fi
+
+if [ -z "$IOS_SDK_PATH" ] || [ ! -d "$IOS_SDK_PATH" ]; then
+    echo 'No iOS SDK found. Please set $IOS_SDK_PATH to point to iOS SDK.'
+    echo 'Example: export IOS_SDK_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk'
+    exit 1
+fi
+
+# Set PREFIX if not already set
+PREFIX=${PREFIX:-$HOME/ios-build}
+
+# iOS deployment target
+IOS_MIN_VERSION=${IOS_MIN_VERSION:-12.0}
+
+# Architecture - default to arm64 for iOS devices
+ARCH=${ARCH:-arm64}
+
+# Host triple
+HOST=arm64-apple-darwin
+
+echo "Configuring aria2 for iOS"
+echo "iOS SDK Path: $IOS_SDK_PATH"
+echo "Prefix: $PREFIX"
+echo "iOS Min Version: $IOS_MIN_VERSION"
+echo "Architecture: $ARCH"
+
+./configure \
+    --host=$HOST \
+    --build=`uname -m`-apple-darwin \
+    --disable-nls \
+    --without-gnutls \
+    --with-openssl \
+    --without-sqlite3 \
+    --without-libxml2 \
+    --with-libexpat \
+    --with-libcares \
+    --with-libz \
+    --with-libssh2 \
+    CC="clang -arch $ARCH -isysroot $IOS_SDK_PATH" \
+    CXX="clang++ -arch $ARCH -isysroot $IOS_SDK_PATH -stdlib=libc++" \
+    CXXFLAGS="-Os -g -miphoneos-version-min=$IOS_MIN_VERSION" \
+    CFLAGS="-Os -g -miphoneos-version-min=$IOS_MIN_VERSION" \
+    LDFLAGS="-arch $ARCH -isysroot $IOS_SDK_PATH -miphoneos-version-min=$IOS_MIN_VERSION -L$PREFIX/lib" \
+    PKG_CONFIG_LIBDIR="$PREFIX/lib/pkgconfig"

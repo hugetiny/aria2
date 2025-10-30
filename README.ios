@@ -1,0 +1,178 @@
+aria2 for iOS devices
+====================
+
+aria2 is a lightweight multi-protocol & multi-source download utility
+operated in command-line. It supports HTTP/HTTPS, FTP, BitTorrent and
+Metalink.
+
+About iOS Usage
+--------------
+
+aria2c is designed to be used within iOS applications via the Process API
+from native Swift/Objective-C code. This allows iOS apps to use aria2
+functionality within the app sandbox environment.
+
+**Important Notes:**
+
+* This binary is intended for use with self-signed IPA files or apps
+  distributed via TrollStore/similar methods.
+* App Store versions may be restricted from using Process API to launch
+  external executables.
+* The binary must be included in your app bundle and launched via native
+  code (Swift/Objective-C) using Process API.
+
+Example Usage in Swift
+---------------------
+
+Here's how to use aria2c in your iOS app via Swift::
+
+    import Foundation
+    
+    class Aria2Manager {
+        func startAria2(downloadURL: String) {
+            let process = Process()
+            
+            // Path to aria2c in your app bundle
+            if let aria2Path = Bundle.main.path(forResource: "aria2c", ofType: nil) {
+                process.executableURL = URL(fileURLWithPath: aria2Path)
+                
+                // Set up arguments
+                process.arguments = [
+                    downloadURL,
+                    "--dir=\(NSTemporaryDirectory())",
+                    "--console-log-level=info"
+                ]
+                
+                // Optional: Capture output
+                let outputPipe = Pipe()
+                process.standardOutput = outputPipe
+                
+                do {
+                    try process.run()
+                    print("aria2c started successfully")
+                } catch {
+                    print("Failed to start aria2c: \(error)")
+                }
+            }
+        }
+    }
+
+Example Usage in AppDelegate.swift
+---------------------------------
+
+Integrate aria2c into your iOS app::
+
+    import UIKit
+    
+    @main
+    class AppDelegate: UIResponder, UIApplicationDelegate {
+        
+        func application(_ application: UIApplication, 
+                        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+            
+            // Verify aria2c exists
+            if let aria2Path = Bundle.main.path(forResource: "aria2c", ofType: nil) {
+                print("aria2c found at: \(aria2Path)")
+                
+                // Test aria2c version
+                let process = Process()
+                process.executableURL = URL(fileURLWithPath: aria2Path)
+                process.arguments = ["--version"]
+                
+                let pipe = Pipe()
+                process.standardOutput = pipe
+                
+                try? process.run()
+                process.waitUntilExit()
+                
+                let data = pipe.fileHandleForReading.readDataToEndOfFile()
+                if let output = String(data: data, encoding: .utf8) {
+                    print("aria2c version: \(output)")
+                }
+            }
+            
+            return true
+        }
+    }
+
+Installation
+-----------
+
+1. Copy the aria2c binary to your iOS app project
+2. Add aria2c to your Xcode project
+3. Make sure aria2c is included in "Copy Bundle Resources" build phase
+4. Use the Swift code above to launch aria2c from your native code
+
+How to Build
+-----------
+
+The easiest way to build the iOS binary is using the provided Dockerfile::
+
+    $ docker build -t aria2-ios - < Dockerfile.ios
+    $ docker run --rm -v $(pwd):/out aria2-ios sh -c "cp /root/build/aria2/src/aria2c /out/aria2c-ios"
+
+Or build directly on macOS with Xcode installed::
+
+    $ ./ios-config
+    $ make
+    $ make install
+
+The binary will be located at ``src/aria2c``.
+
+Notes
+-----
+
+The iOS binary was built with the following libraries statically linked:
+
+* openssl 1.1.1w
+* expat 2.5.0
+* zlib 1.3.1
+* c-ares 1.21.0
+* libssh2 1.11.0
+
+Platform-specific notes:
+
+* iOS uses native Apple TLS (SecureTransport) if built with ``--with-appletls``
+* The binary is compiled for arm64 architecture (iPhone 5S and later)
+* Minimum iOS version: 12.0
+* Since iOS apps run in a sandbox, aria2 can only access files within
+  the app's container directories
+
+Known Issues
+-----------
+
+* App Store submissions may reject apps that use Process API to launch
+  executables. This is primarily for self-signed/TrollStore apps.
+* File system access is limited to app sandbox directories
+* Background downloads may be terminated by iOS when app is suspended
+
+Security Considerations
+---------------------
+
+* Only download and use aria2c binaries from trusted sources
+* The binary should be code-signed as part of your app bundle
+* Consider implementing additional security checks in your app
+
+How to use
+---------
+
+See `the online manual
+<https://aria2.github.io/manual/en/html/>`_.
+
+Platform Channel Integration (Flutter)
+------------------------------------
+
+If you're using Flutter, you'll need to set up a platform channel::
+
+    // Dart side
+    static const platform = MethodChannel('com.example.app/aria2');
+    
+    Future<void> startDownload(String url) async {
+      try {
+        await platform.invokeMethod('startAria2', {'url': url});
+      } catch (e) {
+        print('Failed to start aria2: $e');
+      }
+    }
+
+Then implement the native iOS side in your AppDelegate as shown above.
