@@ -51,8 +51,8 @@ fi
 # Set PREFIX if not already set
 PREFIX=${PREFIX:-$HOME/ios-build}
 
-# iOS deployment target - iOS 13+ for modern compatibility
-IOS_MIN_VERSION=${IOS_MIN_VERSION:-13.0}
+# iOS deployment target - iOS 15+ for latest iOS compatibility
+IOS_MIN_VERSION=${IOS_MIN_VERSION:-15.0}
 
 # Architecture - default to arm64 for iOS devices
 ARCH=${ARCH:-arm64}

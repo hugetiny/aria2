@@ -25,7 +25,7 @@ RUN apt-get update && \
 # Set up environment
 ENV HOST=arm64-apple-darwin
 ENV PREFIX=/root/usr/local
-ENV OSXCROSS_SDK_VERSION=14.5
+ENV OSXCROSS_SDK_VERSION=15.5
 
 # Install osxcross for iOS/macOS cross-compilation
 WORKDIR /root
@@ -41,7 +41,7 @@ RUN curl -L -o MacOSX${OSXCROSS_SDK_VERSION}.sdk.tar.xz \
 
 # Build osxcross
 WORKDIR /root/osxcross
-RUN UNATTENDED=1 SDK_VERSION=${OSXCROSS_SDK_VERSION} OSX_VERSION_MIN=13.0 ./build.sh
+RUN UNATTENDED=1 SDK_VERSION=${OSXCROSS_SDK_VERSION} OSX_VERSION_MIN=15.0 ./build.sh
 
 ENV PATH="/root/osxcross/target/bin:${PATH}"
 ENV OSXCROSS_TARGET_DIR=/root/osxcross/target
@@ -79,8 +79,8 @@ ENV LIBSSH2_VERSION=1.11.0
 ENV LIBSSH2_ARCHIVE=libssh2-$LIBSSH2_VERSION.tar.bz2
 ENV LIBSSH2_URI=https://libssh2.org/download/$LIBSSH2_ARCHIVE
 
-# Darwin/macOS specific flags for iOS compatibility (iOS 13+)
-ENV MACOS_FLAGS="-arch arm64 -mmacosx-version-min=13.0"
+# Darwin/macOS specific flags for iOS 15+ compatibility (latest SDK)
+ENV MACOS_FLAGS="-arch arm64 -mmacosx-version-min=15.0"
 ENV CFLAGS="$MACOS_FLAGS -Os -g"
 ENV CXXFLAGS="$MACOS_FLAGS -Os -g -stdlib=libc++"
 ENV LDFLAGS="$MACOS_FLAGS -L$PREFIX/lib"
